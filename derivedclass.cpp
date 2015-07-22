@@ -1,5 +1,10 @@
 #include <iostream>
 #include <string>
+
+#include <exception>
+
+#include <typeinfo>
+
 using namespace std;
 
 class Polygon {
@@ -42,6 +47,10 @@ class Triangle: public Polygon, public Output {
     int area ()
       { return width * height / 2; }
   };
+
+class Base { virtual void dummy() {} };
+class Derived: public Base { int a; };
+
   
 int main () {
   {
@@ -92,5 +101,53 @@ int main () {
     delete ppoly1;
     delete ppoly2;
   }
+  try {
+//dynamic_cast can only be used with pointers and references to classes (or with void*). 
+//Its purpose is to ensure that the result of the type conversion points to a valid complete object of the destination pointer type.
+//But dynamic_cast can also downcast (convert from pointer-to-base to pointer-to-derived) polymorphic classes (those with virtual members) if -and only if- the pointed object is a valid complete object of the target type.
+    cout<< "dynamic_cast Testing\n";
+    Base * pba = new Derived;
+    Base * pbb = new Base;
+    Derived * pd;
+
+    pd = dynamic_cast<Derived*>(pba);
+    if (pd==0) cout << "Null pointer on first type-cast.\n";
+
+    pd = dynamic_cast<Derived*>(pbb);
+    if (pd==0) cout << "Null pointer on second type-cast.\n"; //if not cast, the pd will be 0;
+
+  } catch (exception& e) {cout << "Exception: " << e.what();}
+//static_cast can perform conversions between pointers to related classes, not only upcasts, but also downcasts 
+//No checks are performed during runtime to guarantee that the object being converted is in fact a full object of the destination type.
+//Therefore, it is up to the programmer to ensure that the conversion is safe. 
+
+//reinterpret_cast converts any pointer type to any other pointer type, even of unrelated classes.
+//The operation result is a simple binary copy of the value from one pointer to the other.
+//All pointer conversions are allowed: neither the content pointed nor the pointer type itself is checked.
+
+//const_cast: This type of casting manipulates the constness of the object pointed by a pointer, either to be set or to be removed.
+
+  {
+    //typeid allows to check the type of an expression: typeid (expression)
+    cout << "typeid (expression) testing\n";
+    int * a, b;
+    a=0; b=0;
+    if (typeid(a) != typeid(b))
+    {
+      cout << "a and b are of different types:\n";
+      cout << "a is: " << typeid(a).name() << '\n';
+      cout << "b is: " << typeid(b).name() << '\n';
+    }
+  }
+
+  try {
+    Base* a = new Base;
+    Base* b = new Derived;
+    cout << "a is: " << typeid(a).name() << '\n';
+    cout << "b is: " << typeid(b).name() << '\n';
+    cout << "*a is: " << typeid(*a).name() << '\n';
+    cout << "*b is: " << typeid(*b).name() << '\n';
+  } catch (exception& e) { cout << "Exception: " << e.what() << '\n'; }
+
   return 0;
 }
