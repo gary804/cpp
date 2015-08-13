@@ -19,7 +19,7 @@ int addition (int a, int b);
 int subtraction (int a, int b);
 int operation (int x, int y, int (*functocall)(int,int));
 
-class Square;
+class Square;	//an empty declaration of class Square
 
 class Rectangle {
     int width, height;
@@ -56,8 +56,6 @@ Rectangle duplicate (const Rectangle& param)
   return res;
 }
 
-
-
 class Square {
   friend class Rectangle;
   private:
@@ -65,6 +63,7 @@ class Square {
   public:
     Square (int a) : side(a) {}
 };
+
 void Rectangle::convert (Square a) {
   width = a.side;
   height = a.side;
