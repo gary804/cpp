@@ -8,6 +8,7 @@ using namespace std;
 
 bool hasDuplication(int *array, int size);
 int binarySearch(int* array, int size, int item);
+int atoi(const char *str);
 
 int main(){
 	cout << "Good, it works\n";
@@ -18,14 +19,22 @@ int main(){
 		cout << binarySearch(array, al, i) <<endl;
 	}
 	cout <<"Has Duplication? "<< ((hasDuplication(array, al))? "True": "False") << endl;
-	cout <<array[0] << endl;
+	//cout <<array[0] << endl;
 	int array1[] ={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,4,15,16,17,18,19,20};
 	cout <<"Has Duplication? "<< ((hasDuplication(array1, ARRAY_SIZE(array1)))? "True": "False") << endl;
-	cout <<array1[0] << endl;
+	//cout <<array1[0] << endl;
+	{
+		char number[] = "+1234";
+		cout << atoi(number) << endl;
+		char number1[] = "-12345.5";
+		cout << atoi(number1) << endl;
+		char number2[] = "-123a45.5";
+		cout << atoi(number2) << endl;
+	}
 }
 
 //bool hasDuplication(int *array, int size){ //works
-bool hasDuplication(int array[], int size){
+bool hasDuplication(int array[], int size){	//array just use its address, like previous line
 	for (int i=0; i<size-1; i++){
 		for (int j = i+1; j < size; ++j)
 		{
@@ -35,7 +44,7 @@ bool hasDuplication(int array[], int size){
 			}
 		}
 	}
-	array[0] = 10;
+	//array[0] = 10;	//test array varaible only
 	return false;
 }
 
@@ -83,4 +92,26 @@ int binarySearch(int array[], int size, int item){
 			}
 		}
 	}
+}
+int atoi(const char *str) {
+	int integer=0, sign=1;
+	for (int i=0; str[i]!=0; i++) {
+		if (str[i]=='-') {
+			sign *= -1;
+		}
+		else if (str[i]=='+') {
+			continue;
+		}
+		else if (str[i]>='0' && str[i]<='9')
+		{
+			integer = integer*10+ str[i]-'0';
+		} else
+		{
+			if (str[i] == '.') 
+				break;
+			else
+				return 0;
+		}
+	}
+	return integer * sign;
 }
