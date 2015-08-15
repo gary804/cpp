@@ -1,6 +1,8 @@
 #include <iostream>
 //#include <sstream>
 //#include <string>
+//#include <stdio.h>
+#include <cstring>
 
 #define ARRAY_SIZE(array) (sizeof((array))/sizeof((array[0])))
 
@@ -9,6 +11,9 @@ using namespace std;
 bool hasDuplication(int *array, int size);
 int binarySearch(int* array, int size, int item);
 int atoi(const char *str);
+char* reverseWords(char *str);
+char* reverseWords1(char *str);
+char* reverseCharacter(char *str);
 
 int main(){
 	cout << "Good, it works\n";
@@ -23,6 +28,8 @@ int main(){
 	int array1[] ={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,4,15,16,17,18,19,20};
 	cout <<"Has Duplication? "<< ((hasDuplication(array1, ARRAY_SIZE(array1)))? "True": "False") << endl;
 	//cout <<array1[0] << endl;
+
+assicToInteger:
 	{
 		char number[] = "+1234";
 		cout << atoi(number) << endl;
@@ -31,6 +38,18 @@ int main(){
 		char number2[] = "-123a45.5";
 		cout << atoi(number2) << endl;
 	}
+
+reverseWordsTest:
+	{
+		char s[] = "Write a function to reverse the order of words in a string in place.";
+		cout << s << endl;
+		cout << reverseWords1(s) << endl;
+		cout << s << endl;
+		char s1[] = "Write a function to reverse the order of words in a string in place.";
+		cout << reverseCharacter(s1)<<endl;
+
+	}
+
 }
 
 //bool hasDuplication(int *array, int size){ //works
@@ -114,4 +133,82 @@ int atoi(const char *str) {
 		}
 	}
 	return integer * sign;
+}
+
+char* reverseWords(char *str){
+	char * pch;
+	int len= strlen(str);
+	//char nstr[len+1];	//connot be used in functions
+	char* nstr = new char[len+1];
+	memset (nstr,'-',len);
+	nstr[len]=0;
+	int posi = len;
+	pch = strtok (str," ,.-");
+	while(pch != NULL){
+		//cout << pch <<", ";
+		if (posi!=len) nstr[posi] = ' ';
+		//cout <<nstr <<endl;
+		int l = strlen(pch);
+		posi -= l;
+		memcpy(nstr+posi, pch, l);
+		posi--;
+		pch = strtok (NULL, " ,.-");
+	}
+	//nstr[len] = 0;
+	//cout << nstr <<endl;
+	memcpy(str, nstr, len+1);
+	delete[] nstr;
+	int i =0;
+	while(str[i]=='-'){
+		i++;
+	}
+	return str+i;
+}
+
+char* reverseWords1(char *str){
+	int len= strlen(str);
+	//char nstr[len+1];	//connot be used in functions
+	char* nstr = new char[len+1];
+	memset (nstr,'-',len);
+	nstr[len]=0;
+	int posi = len;
+	int startPosition=0, stopPosition=0;
+	int l;
+	while(stopPosition<=len){
+		if (str[stopPosition] != ' ' && str[stopPosition] != 0) {
+			stopPosition++;
+			continue;
+		}
+		l=stopPosition - startPosition;
+		//cout << l <<"," <<startPosition <<"," <<stopPosition << endl;
+		posi -= l;
+		for (int i=0; i<l; i++){
+			nstr[posi+i] = str[startPosition+i];
+		}
+		//cout <<nstr <<"," <<posi<<endl;
+		//if (posi==0) break;
+		if (str[stopPosition] == 0) break;
+		nstr[--posi] = ' ';
+		for (; stopPosition< len && str[stopPosition]==' '; stopPosition++); //skip spaces
+		startPosition = stopPosition;
+	}
+	memcpy(str, nstr+posi, len+1);
+	delete[] nstr;
+	int i =0;
+	while(str[i]=='-'){
+		i++;
+	}
+	return str+i;
+}
+
+char* reverseCharacter(char *str){
+	int len= strlen(str);
+	//cout <<len<<endl;
+	for (int i=0; i<len/2; i++){
+		char c = str[i];
+		str[i] = str[len-i-1];
+		str[len-i-1] = c;
+		//cout <<str<<endl;
+	}
+	return str;
 }
