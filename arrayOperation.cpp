@@ -14,6 +14,8 @@ int atoi(const char *str);
 char* reverseWords(char *str);
 char* reverseWords1(char *str);
 char* reverseCharacter(char *str);
+int * merge(int * half1, int size1, int * half2, int size2);
+int * mergeSort(int * array, int size);
 
 int main(){
 	cout << "Good, it works\n";
@@ -48,6 +50,27 @@ reverseWordsTest:
 		char s1[] = "Write a function to reverse the order of words in a string in place.";
 		cout << reverseCharacter(s1)<<endl;
 
+	}
+
+sortingTest:
+	{
+		//int si1[] ={1,3,5,7,9};
+		//int si2[] ={0,2,4,6,8};
+		int si1[] ={3,4,6,7};
+		int si2[] ={2,5};
+		int * msip = NULL;
+		msip = merge(si1,ARRAY_SIZE(si1),si2,ARRAY_SIZE(si2));
+		for (int i=0; i< ARRAY_SIZE(si1)+ARRAY_SIZE(si2); i++){
+			cout <<msip[i] <<( ( i < (ARRAY_SIZE(si1)+ARRAY_SIZE(si2)-1) )? ", " : "\n" );
+		}
+		delete[] msip;
+
+		int si3[] ={8,4,6,2,0,1,5,3,9,7};
+		//int si3[] ={8,4,9};
+		int* ip = mergeSort(si3, ARRAY_SIZE(si3));
+		for (int i=0; i < (ARRAY_SIZE(si3)); i++){
+			cout<<ip[i]<<((i!=ARRAY_SIZE(si3)-1)?",":"\n");
+		}
 	}
 
 }
@@ -201,6 +224,7 @@ char* reverseWords1(char *str){
 	return str+i;
 }
 
+
 char* reverseCharacter(char *str){
 	int len= strlen(str);
 	//cout <<len<<endl;
@@ -211,4 +235,57 @@ char* reverseCharacter(char *str){
 		//cout <<str<<endl;
 	}
 	return str;
+}
+
+int * merge(int * half1, int size1, int * half2, int size2){
+	int * mergedArray = new int[size1+size2];
+	int i1=0, i2=0, i=0;
+	while(i<size1+size2){
+		if (i1<size1&&i2<size2){
+			mergedArray[i++]=(half1[i1]<=half2[i2])? half1[i1++]: half2[i2++];
+		} else if (i1<size1){
+			mergedArray[i++]=half1[i1++];
+		} else {mergedArray[i++]=half2[i2++];}
+		//cout <<i<<","<<i1<<","<<i2<<endl;
+	}
+	return mergedArray;
+}
+
+int * mergeSort(int * array, int size){
+	if (size==1) return array;
+	int l = size/2;
+	//cout<<"a1:l="<<l<<":";
+	int* a1 = mergeSort(array, l);
+/*	
+	for (int i=0; i<l; i++){
+		cout<<a1[i]<<",";
+	}
+	cout<<endl;
+	cout<<"a2:size-l="<<size-l<<":";
+*/
+	int* a2 = mergeSort(array+l, size-l);
+/*
+	for (int i=0; i<size-l; i++){
+		cout<<a2[i]<<",";
+	}
+	cout<<endl<<"l="<<l<<",size-l="<<size-l<<";"<<a1[0]<<","<<a2[0]<<endl;
+*/
+	int* a = merge(a1, l, a2, size-l);
+/*
+	cout<<"a:";
+	for (int i=0; i<size; i++){
+		cout<<a[i]<<",";
+	}
+	cout<<endl;
+*/
+	memcpy(array, a, size*sizeof(int));
+/*
+	cout<<"array:";
+	for (int i=0; i<size; i++){
+		cout<<array[i]<<",";
+	}
+	cout<<endl;
+*/
+	delete[] a;
+	return array;
 }
