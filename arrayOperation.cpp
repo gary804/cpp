@@ -16,6 +16,7 @@ char* reverseWords1(char *str);
 char* reverseCharacter(char *str);
 int * merge(int * half1, int size1, int * half2, int size2);
 int * mergeSort(int * array, int size);
+int * mergeSortIterate(int * array, int size);
 
 int main(){
 	cout << "Good, it works\n";
@@ -53,7 +54,7 @@ reverseWordsTest:
 	}
 
 sortingTest:
-	{
+	{	cout<<"merging test\n";
 		//int si1[] ={1,3,5,7,9};
 		//int si2[] ={0,2,4,6,8};
 		int si1[] ={3,4,6,7};
@@ -65,14 +66,64 @@ sortingTest:
 		}
 		delete[] msip;
 
+		cout<<"sorting test\n";
 		int si3[] ={8,4,6,2,0,1,5,3,9,7};
-		//int si3[] ={8,4,9};
-		int* ip = mergeSort(si3, ARRAY_SIZE(si3));
+		//int* ip = mergeSort(si3, ARRAY_SIZE(si3));
+		int* ip = mergeSortIterate(si3, ARRAY_SIZE(si3));
 		for (int i=0; i < (ARRAY_SIZE(si3)); i++){
 			cout<<ip[i]<<((i!=ARRAY_SIZE(si3)-1)?",":"\n");
 		}
-	}
 
+		int si4[] ={10,8,4,6,2,0,1,5,3,9,7};
+		//int* ip = mergeSort(si3, ARRAY_SIZE(si3));
+		ip = mergeSortIterate(si4, ARRAY_SIZE(si4));
+		for (int i=0; i < (ARRAY_SIZE(si4)); i++){
+			cout<<ip[i]<<((i!=ARRAY_SIZE(si4)-1)?",":"\n");
+		}
+
+		int si5[] ={10,8,4,6,11,2,0,1,5,3,9,7};
+		//int* ip = mergeSort(si3, ARRAY_SIZE(si3));
+		ip = mergeSortIterate(si5, ARRAY_SIZE(si5));
+		for (int i=0; i < (ARRAY_SIZE(si5)); i++){
+			cout<<ip[i]<<((i!=ARRAY_SIZE(si5)-1)?",":"\n");
+		}
+
+		int si6[] ={10,8,4,6,11,2,0,12,1,5,3,9,7};
+		//ip = mergeSort(si3, ARRAY_SIZE(si3));
+		ip = mergeSortIterate(si6, ARRAY_SIZE(si6));
+		for (int i=0; i < (ARRAY_SIZE(si6)); i++){
+			cout<<ip[i]<<((i!=ARRAY_SIZE(si6)-1)?",":"\n");
+		}
+
+		int si7[] ={10,8,13,4,6,11,2,0,12,1,5,3,9,7};
+		//ip = mergeSort(si3, ARRAY_SIZE(si3));
+		ip = mergeSortIterate(si7, ARRAY_SIZE(si7));
+		for (int i=0; i < (ARRAY_SIZE(si7)); i++){
+			cout<<ip[i]<<((i!=ARRAY_SIZE(si7)-1)?",":"\n");
+		}
+
+		int si8[] ={10,8,13,4,14,6,11,2,0,12,1,5,3,9,7};
+		//ip = mergeSort(si3, ARRAY_SIZE(si3));
+		ip = mergeSortIterate(si8, ARRAY_SIZE(si8));
+		for (int i=0; i < (ARRAY_SIZE(si8)); i++){
+			cout<<ip[i]<<((i!=ARRAY_SIZE(si8)-1)?",":"\n");
+		}
+
+		int si9[] ={10,8,13,4,14,6,11,2,0,12,1,5,3,15,9,7};
+		//int* ip = mergeSort(si3, ARRAY_SIZE(si3));
+		ip = mergeSortIterate(si9, ARRAY_SIZE(si9));
+		for (int i=0; i < (ARRAY_SIZE(si9)); i++){
+			cout<<ip[i]<<((i!=ARRAY_SIZE(si9)-1)?",":"\n");
+		}
+
+		int si10[] ={16,10,8,13,4,14,6,11,2,0,12,1,5,3,15,9,7};
+		//int* ip = mergeSort(si3, ARRAY_SIZE(si3));
+		ip = mergeSortIterate(si10, ARRAY_SIZE(si10));
+		for (int i=0; i < (ARRAY_SIZE(si10)); i++){
+			cout<<ip[i]<<((i!=ARRAY_SIZE(si10)-1)?",":"\n");
+		}
+
+	}
 }
 
 //bool hasDuplication(int *array, int size){ //works
@@ -287,5 +338,42 @@ int * mergeSort(int * array, int size){
 	cout<<endl;
 */
 	delete[] a;
+	return array;
+}
+
+int * mergeSortIterate(int * array, int size){
+	int k;	//sorting subgroup size
+	int rsize; //right side group size
+	for (k=1; k<=size/2; k=2*k){
+/*
+		for (int i=0; i < size; i++){
+			cout<<array[i]<<((i!=size-1)?",":"\n");
+		}
+*/
+		for (int j=0; j<size; j+=2*k){
+			if (j+k >= size) {
+				break;
+			} else if (j+2*k >= size){
+				rsize= size - (j+k);
+//				cout <<"rsize="<<rsize<<",size="<<size<<",j+k="<<j+k<<endl;
+			} else {
+				rsize = k;
+//				cout <<"rsize="<<rsize<<endl;
+			}
+			int * temp = merge(array+j,k, array+j+k,rsize);
+			memcpy(array+j, temp, (k+rsize)*sizeof(int));
+			delete[] temp;
+/*
+			cout<<"j="<<j<<endl;
+			for (int i=0; i < k+rsize; i++){
+				cout<<array[j+i]<<",";
+			}
+			cout<<endl;
+*/
+		}
+	}
+	int * temp = merge(array,k, array+k,size-k);
+	memcpy(array, temp, (size)*sizeof(int));
+	delete[] temp;
 	return array;
 }
