@@ -1,6 +1,6 @@
 #include <iostream>
 //#include <sstream>
-//#include <string>
+#include <string>
 //#include <stdio.h>
 #include <cstring>
 
@@ -11,9 +11,12 @@ using namespace std;
 bool hasDuplication(int *array, int size);
 int binarySearch(int* array, int size, int item);
 int atoi(const char *str);
+int atoi(std::string str);
 char* reverseWords(char *str);
+std::string reverseWords(std::string str);
 char* reverseWords1(char *str);
 char* reverseCharacter(char *str);
+std::string reverseCharacter(std::string str);
 int * merge(int * half1, int size1, int * half2, int size2);
 int * mergeSort(int * array, int size);
 int * mergeSortIterate(int * array, int size);
@@ -33,23 +36,33 @@ int main(){
 	//cout <<array1[0] << endl;
 
 assicToInteger:
-	{
+	{	cout<<"atoi test:\n";
 		char number[] = "+1234";
 		cout << atoi(number) << endl;
 		char number1[] = "-12345.5";
 		cout << atoi(number1) << endl;
 		char number2[] = "-123a45.5";
 		cout << atoi(number2) << endl;
+		std::string s1 =  "+1234";
+		cout << atoi(s1) << endl;
 	}
 
 reverseWordsTest:
-	{
+	{	cout <<"reverseWordsTest:\n";
 		char s[] = "Write a function to reverse the order of words in a string in place.";
 		cout << s << endl;
 		cout << reverseWords1(s) << endl;
 		cout << s << endl;
+		cout <<"std::string test:\n";
+		std::string s2 = "Write a function to reverse the order of words in a string in place.";
+		cout << s2 << endl;
+		cout << reverseWords(s2) << endl;
+		cout << s2 << endl;
+		cout <<"reverseCharacter test:\n";
 		char s1[] = "Write a function to reverse the order of words in a string in place.";
 		cout << reverseCharacter(s1)<<endl;
+		std::string s3 = "Write a function to reverse the order of words in a string in place.";
+		cout << reverseCharacter(s3)<<endl;
 
 	}
 
@@ -208,6 +221,31 @@ int atoi(const char *str) {
 	}
 	return integer * sign;
 }
+int atoi(std::string str) {
+	int integer=0, sign=1;
+
+	for (int i=0; i<str.length(); i++) {
+
+		if (str[i]=='-') {
+			sign *= -1;
+		} 
+		else if (str[i]=='+') {
+			continue;
+		}
+		else if (str[i]>='0' && str[i]<='9')
+		{
+			integer = integer*10+ str[i]-'0';
+		} else
+		{
+			if (str[i] == '.') 
+				break;
+			else
+				return 0;
+		}
+	}
+
+	return integer * sign;
+}
 
 char* reverseWords(char *str){
 	char * pch;
@@ -237,6 +275,26 @@ char* reverseWords(char *str){
 		i++;
 	}
 	return str+i;
+}
+std::string reverseWords(std::string str){
+	int len= str.length();
+	std::string nstr;
+	int startPosition=0, stopPosition=0;
+	while(stopPosition<len){
+		if (str[stopPosition] == ' ') {
+			if (nstr.length()>0) nstr.insert(0, " ");
+			nstr.insert(0, str.substr(startPosition, stopPosition-startPosition));
+			while (str[++stopPosition] == ' ' && stopPosition<len);
+			startPosition = stopPosition;
+		} else if (stopPosition == len-1) {
+			if (nstr.length()>0) nstr.insert(0, " ");
+			nstr.insert(0, str.substr(startPosition, len-startPosition));
+			break;
+		} else {
+			stopPosition++;
+		}
+	}
+	return nstr;
 }
 
 char* reverseWords1(char *str){
@@ -278,6 +336,17 @@ char* reverseWords1(char *str){
 
 char* reverseCharacter(char *str){
 	int len= strlen(str);
+	//cout <<len<<endl;
+	for (int i=0; i<len/2; i++){
+		char c = str[i];
+		str[i] = str[len-i-1];
+		str[len-i-1] = c;
+		//cout <<str<<endl;
+	}
+	return str;
+}
+std::string reverseCharacter(std::string str){
+	int len= str.length();
 	//cout <<len<<endl;
 	for (int i=0; i<len/2; i++){
 		char c = str[i];
