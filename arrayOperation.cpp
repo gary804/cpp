@@ -20,6 +20,7 @@ std::string reverseCharacter(std::string str);
 int * merge(int * half1, int size1, int * half2, int size2);
 int * mergeSort(int * array, int size);
 int * mergeSortIterate(int * array, int size);
+void quickSort(int array[], int startIndex, int endIndex);
 
 int main(){
 	cout << "Good, it works\n";
@@ -82,58 +83,65 @@ sortingTest:
 		cout<<"sorting test\n";
 		int si3[] ={8,4,6,2,0,1,5,3,9,7};
 		//int* ip = mergeSort(si3, ARRAY_SIZE(si3));
-		int* ip = mergeSortIterate(si3, ARRAY_SIZE(si3));
+		//int* ip = mergeSortIterate(si3, ARRAY_SIZE(si3));
+		quickSort(si3, 0, ARRAY_SIZE(si3)-1);
 		for (int i=0; i < (ARRAY_SIZE(si3)); i++){
-			cout<<ip[i]<<((i!=ARRAY_SIZE(si3)-1)?",":"\n");
+			cout<<array[i]<<((i!=ARRAY_SIZE(si3)-1)?",":"\n");
 		}
 
 		int si4[] ={10,8,4,6,2,0,1,5,3,9,7};
 		//int* ip = mergeSort(si3, ARRAY_SIZE(si3));
-		ip = mergeSortIterate(si4, ARRAY_SIZE(si4));
+		quickSort(si4, 0, ARRAY_SIZE(si4)-1 );
 		for (int i=0; i < (ARRAY_SIZE(si4)); i++){
-			cout<<ip[i]<<((i!=ARRAY_SIZE(si4)-1)?",":"\n");
+			cout<<array[i]<<((i!=ARRAY_SIZE(si4)-1)?",":"\n");
 		}
 
 		int si5[] ={10,8,4,6,11,2,0,1,5,3,9,7};
 		//int* ip = mergeSort(si3, ARRAY_SIZE(si3));
-		ip = mergeSortIterate(si5, ARRAY_SIZE(si5));
+		quickSort(si5, 0, ARRAY_SIZE(si5)-1 );
 		for (int i=0; i < (ARRAY_SIZE(si5)); i++){
-			cout<<ip[i]<<((i!=ARRAY_SIZE(si5)-1)?",":"\n");
+			cout<<array[i]<<((i!=ARRAY_SIZE(si5)-1)?",":"\n");
 		}
 
 		int si6[] ={10,8,4,6,11,2,0,12,1,5,3,9,7};
 		//ip = mergeSort(si3, ARRAY_SIZE(si3));
-		ip = mergeSortIterate(si6, ARRAY_SIZE(si6));
+		quickSort(si6, 0, ARRAY_SIZE(si6)-1 );
 		for (int i=0; i < (ARRAY_SIZE(si6)); i++){
-			cout<<ip[i]<<((i!=ARRAY_SIZE(si6)-1)?",":"\n");
+			cout<<array[i]<<((i!=ARRAY_SIZE(si6)-1)?",":"\n");
 		}
 
 		int si7[] ={10,8,13,4,6,11,2,0,12,1,5,3,9,7};
 		//ip = mergeSort(si3, ARRAY_SIZE(si3));
-		ip = mergeSortIterate(si7, ARRAY_SIZE(si7));
+		quickSort(si7, 0, ARRAY_SIZE(si7)-1 );
 		for (int i=0; i < (ARRAY_SIZE(si7)); i++){
-			cout<<ip[i]<<((i!=ARRAY_SIZE(si7)-1)?",":"\n");
+			cout<<array[i]<<((i!=ARRAY_SIZE(si7)-1)?",":"\n");
 		}
 
 		int si8[] ={10,8,13,4,14,6,11,2,0,12,1,5,3,9,7};
 		//ip = mergeSort(si3, ARRAY_SIZE(si3));
-		ip = mergeSortIterate(si8, ARRAY_SIZE(si8));
+		quickSort(si8, 0, ARRAY_SIZE(si8)-1 );
 		for (int i=0; i < (ARRAY_SIZE(si8)); i++){
-			cout<<ip[i]<<((i!=ARRAY_SIZE(si8)-1)?",":"\n");
+			cout<<array[i]<<((i!=ARRAY_SIZE(si8)-1)?",":"\n");
 		}
 
 		int si9[] ={10,8,13,4,14,6,11,2,0,12,1,5,3,15,9,7};
 		//int* ip = mergeSort(si3, ARRAY_SIZE(si3));
-		ip = mergeSortIterate(si9, ARRAY_SIZE(si9));
+		//for (int i=0; i < (ARRAY_SIZE(si9)); i++){
+		//	cout<<ip[i]<<((i!=ARRAY_SIZE(si9)-1)?",":"\n");
+		//}
+		quickSort(si9, 0, ARRAY_SIZE(si9)-1 );
 		for (int i=0; i < (ARRAY_SIZE(si9)); i++){
-			cout<<ip[i]<<((i!=ARRAY_SIZE(si9)-1)?",":"\n");
+			cout<<array[i]<<((i!=ARRAY_SIZE(si9)-1)?",":"\n");
 		}
 
 		int si10[] ={16,10,8,13,4,14,6,11,2,0,12,1,5,3,15,9,7};
 		//int* ip = mergeSort(si3, ARRAY_SIZE(si3));
-		ip = mergeSortIterate(si10, ARRAY_SIZE(si10));
+		//for (int i=0; i < (ARRAY_SIZE(si10)); i++){
+		//	cout<<ip[i]<<((i!=ARRAY_SIZE(si10)-1)?",":"\n");
+		//}
+		quickSort(si10, 0, ARRAY_SIZE(si10)-1 );
 		for (int i=0; i < (ARRAY_SIZE(si10)); i++){
-			cout<<ip[i]<<((i!=ARRAY_SIZE(si10)-1)?",":"\n");
+			cout<<array[i]<<((i!=ARRAY_SIZE(si10)-1)?",":"\n");
 		}
 
 	}
@@ -144,6 +152,7 @@ bool hasDuplication(int array[], int size){	//array just use its address, like p
 	for (int i=0; i<size-1; i++){
 		for (int j = i+1; j < size; ++j)
 		{
+
 			if (array[i] == array[j]) {
 				cout << "i=" <<i <<", j=" << j <<endl;
 				return	true;
@@ -445,4 +454,42 @@ int * mergeSortIterate(int * array, int size){
 	memcpy(array, temp, (size)*sizeof(int));
 	delete[] temp;
 	return array;
+}
+
+void quickSort(int array[], int startIndex, int endIndex){
+	int pivot = array[startIndex+(endIndex-startIndex)/2];
+	int i = startIndex;
+	int j = endIndex;
+	int temp;
+	/*
+	cout<<"----------------------------------\n";
+	cout <<"i="<<i<<",j="<<j<<",startIndex="<<startIndex<<",endIndex="<<endIndex<<",Pivot="<<pivot<<endl;
+	for (int i=startIndex; i <= endIndex; i++){
+		cout<<array[i]<<((i!=endIndex)?",":"\n");
+	}
+	*/
+	if (endIndex-startIndex<=1){
+		if (array[startIndex] > array[endIndex]){
+			temp= array[startIndex];
+			array[startIndex] = array[endIndex];
+			array[endIndex] = temp;
+		}
+		return ;
+	}
+	while(i<j){
+		while(array[i]<pivot) i++;
+		while(array[j]>pivot) j--;
+		//if (i>=j) break;
+		temp = array[i];
+		array[i++] = array[j];
+		array[j--] = temp;
+	}
+	/*
+	cout <<"i="<<i<<",j="<<j<<",startIndex="<<startIndex<<",endIndex="<<endIndex<<",Pivot="<<pivot<<endl;
+	for (int i=startIndex; i <= endIndex; i++){
+		cout<<array[i]<<((i!=endIndex)?",":"\n");
+	}
+	*/
+	if (startIndex<i-1) quickSort(array, startIndex, i-1);
+	if (i<endIndex) quickSort(array, i, endIndex);
 }
