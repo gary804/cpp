@@ -86,42 +86,42 @@ sortingTest:
 		//int* ip = mergeSortIterate(si3, ARRAY_SIZE(si3));
 		quickSort(si3, 0, ARRAY_SIZE(si3)-1);
 		for (int i=0; i < (ARRAY_SIZE(si3)); i++){
-			cout<<array[i]<<((i!=ARRAY_SIZE(si3)-1)?",":"\n");
+			cout<<si3[i]<<((i!=ARRAY_SIZE(si3)-1)?",":"\n");
 		}
 
 		int si4[] ={10,8,4,6,2,0,1,5,3,9,7};
 		//int* ip = mergeSort(si3, ARRAY_SIZE(si3));
 		quickSort(si4, 0, ARRAY_SIZE(si4)-1 );
 		for (int i=0; i < (ARRAY_SIZE(si4)); i++){
-			cout<<array[i]<<((i!=ARRAY_SIZE(si4)-1)?",":"\n");
+			cout<<si4[i]<<((i!=ARRAY_SIZE(si4)-1)?",":"\n");
 		}
 
 		int si5[] ={10,8,4,6,11,2,0,1,5,3,9,7};
 		//int* ip = mergeSort(si3, ARRAY_SIZE(si3));
 		quickSort(si5, 0, ARRAY_SIZE(si5)-1 );
 		for (int i=0; i < (ARRAY_SIZE(si5)); i++){
-			cout<<array[i]<<((i!=ARRAY_SIZE(si5)-1)?",":"\n");
+			cout<<si5[i]<<((i!=ARRAY_SIZE(si5)-1)?",":"\n");
 		}
 
 		int si6[] ={10,8,4,6,11,2,0,12,1,5,3,9,7};
 		//ip = mergeSort(si3, ARRAY_SIZE(si3));
 		quickSort(si6, 0, ARRAY_SIZE(si6)-1 );
 		for (int i=0; i < (ARRAY_SIZE(si6)); i++){
-			cout<<array[i]<<((i!=ARRAY_SIZE(si6)-1)?",":"\n");
+			cout<<si6[i]<<((i!=ARRAY_SIZE(si6)-1)?",":"\n");
 		}
 
 		int si7[] ={10,8,13,4,6,11,2,0,12,1,5,3,9,7};
 		//ip = mergeSort(si3, ARRAY_SIZE(si3));
 		quickSort(si7, 0, ARRAY_SIZE(si7)-1 );
 		for (int i=0; i < (ARRAY_SIZE(si7)); i++){
-			cout<<array[i]<<((i!=ARRAY_SIZE(si7)-1)?",":"\n");
+			cout<<si7[i]<<((i!=ARRAY_SIZE(si7)-1)?",":"\n");
 		}
 
 		int si8[] ={10,8,13,4,14,6,11,2,0,12,1,5,3,9,7};
 		//ip = mergeSort(si3, ARRAY_SIZE(si3));
 		quickSort(si8, 0, ARRAY_SIZE(si8)-1 );
 		for (int i=0; i < (ARRAY_SIZE(si8)); i++){
-			cout<<array[i]<<((i!=ARRAY_SIZE(si8)-1)?",":"\n");
+			cout<<si8[i]<<((i!=ARRAY_SIZE(si8)-1)?",":"\n");
 		}
 
 		int si9[] ={10,8,13,4,14,6,11,2,0,12,1,5,3,15,9,7};
@@ -131,17 +131,18 @@ sortingTest:
 		//}
 		quickSort(si9, 0, ARRAY_SIZE(si9)-1 );
 		for (int i=0; i < (ARRAY_SIZE(si9)); i++){
-			cout<<array[i]<<((i!=ARRAY_SIZE(si9)-1)?",":"\n");
+			cout<<si9[i]<<((i!=ARRAY_SIZE(si9)-1)?",":"\n");
 		}
 
-		int si10[] ={16,10,8,13,4,14,6,11,2,0,12,1,5,3,15,9,7};
+		int si10[] ={16,10,8,8,13,4,14,6,11,2,0,8,12,1,5,3,8,15,9,7};
 		//int* ip = mergeSort(si3, ARRAY_SIZE(si3));
 		//for (int i=0; i < (ARRAY_SIZE(si10)); i++){
 		//	cout<<ip[i]<<((i!=ARRAY_SIZE(si10)-1)?",":"\n");
 		//}
+	cout<<"=================================================\n";
 		quickSort(si10, 0, ARRAY_SIZE(si10)-1 );
 		for (int i=0; i < (ARRAY_SIZE(si10)); i++){
-			cout<<array[i]<<((i!=ARRAY_SIZE(si10)-1)?",":"\n");
+			cout<<si10[i]<<((i!=ARRAY_SIZE(si10)-1)?",":"\n");
 		}
 
 	}
@@ -479,7 +480,7 @@ void quickSort(int array[], int startIndex, int endIndex){
 	while(i<j){
 		while(array[i]<pivot) i++;
 		while(array[j]>pivot) j--;
-		//if (i>=j) break;
+		if (i>=j) break;
 		temp = array[i];
 		array[i++] = array[j];
 		array[j--] = temp;
