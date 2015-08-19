@@ -134,7 +134,8 @@ sortingTest:
 			cout<<si9[i]<<((i!=ARRAY_SIZE(si9)-1)?",":"\n");
 		}
 
-		int si10[] ={16,10,8,8,13,4,14,6,11,2,0,8,12,1,5,3,8,15,9,7};
+		//int si10[] = {16,10,8,8,13,4,14,6,11,2,0,8,12,1,5,3,8,15,9,7};
+		int si10[] = {15,0,8,8,2,6,10,14,4,12,1,11,9,3,7,5,13};
 		//int* ip = mergeSort(si3, ARRAY_SIZE(si3));
 		//for (int i=0; i < (ARRAY_SIZE(si10)); i++){
 		//	cout<<ip[i]<<((i!=ARRAY_SIZE(si10)-1)?",":"\n");
@@ -491,6 +492,14 @@ void quickSort(int array[], int startIndex, int endIndex){
 		cout<<array[i]<<((i!=endIndex)?",":"\n");
 	}
 	*/
-	if (startIndex<i-1) quickSort(array, startIndex, i-1);
-	if (i<endIndex) quickSort(array, i, endIndex);
+	if (startIndex<i-1) {
+		quickSort(array, startIndex, i-1);
+	} else {
+		quickSort(array, startIndex, i);
+	}
+	if (i<endIndex) {
+		quickSort(array, i, endIndex);
+	} else {
+		quickSort(array, i-1, endIndex);
+	}
 }
