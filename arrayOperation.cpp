@@ -21,6 +21,7 @@ int * merge(int * half1, int size1, int * half2, int size2);
 int * mergeSort(int * array, int size);
 int * mergeSortIterate(int * array, int size);
 void quickSort(int array[], int startIndex, int endIndex);
+int findKthElement(int array[], int kth, int startIndex, int endIndex);
 
 int main(){
 	cout << "Good, it works\n";
@@ -146,7 +147,21 @@ sortingTest:
 		for (int i=0; i < (ARRAY_SIZE(si10)); i++){
 			cout<<si10[i]<<((i!=ARRAY_SIZE(si10)-1)?",":"\n");
 		}
-
+		int si12[] = {16,10,8,13,4,14,6,11,2,0,12,1,5,3,15,9,7};
+		int si11[ARRAY_SIZE(si12)];
+		for (int i=0; i < (ARRAY_SIZE(si11)); i++){
+			cout<<si11[i]<<((i!=ARRAY_SIZE(si11)-1)?",":"\n");
+		}
+		//int kth = 17;
+		for (int i=1; i<=ARRAY_SIZE(si11); i++){
+			memcpy(si11,si12,(ARRAY_SIZE(si11))*sizeof(int));
+			int kth = i;
+			cout <<kth<<"th element is " <<findKthElement(si11, kth, 0, (ARRAY_SIZE(si11)-1) ) <<endl;
+			for (int i=0; i < (ARRAY_SIZE(si11)); i++){
+				cout<<si11[i]<<((i!=ARRAY_SIZE(si11)-1)?",":"\n");
+			}
+		}
+		
 	}
 }
 
@@ -512,4 +527,41 @@ void quickSort(int array[], int startIndex, int endIndex){
 	if (i < endIndex )
 		quickSort(array, i, endIndex);
 
+}
+
+int findKthElement(int array[], int kth, int startIndex, int endIndex){
+	int i = startIndex;
+	int j = endIndex;
+	int temp = 0;
+	int pivot = array[startIndex+(endIndex-startIndex)/2];
+	//cout <<"????????????kth="<<kth<<",startIndex="<<startIndex<<",endIndex="<<endIndex<<",pivot="<<pivot<<endl;
+	//for (int i=0; i<=endIndex; i++) {cout <<array[i] <<",";} cout<<endl;
+	if (endIndex-startIndex <=1) {
+		if (array[startIndex] > array[endIndex]){
+			temp = array[startIndex];
+			array[startIndex] = array[endIndex];
+			array[endIndex] = temp;
+		}
+		return array[kth-1];
+	}
+
+	while(i<j){
+		while(array[i]<pivot) i++;
+		while(array[j]>pivot) j--;
+		if (i>=j) break;
+		//cout <<i<<","<<j<<","<<array[i]<<","<<array[j]<<endl;
+		temp = array[i];
+		array[i++] = array[j];
+		array[j--] = temp;
+	}
+	//cout <<i<<","<<j<<endl;
+	//if ((i-1)>=(kth)) {
+	if ((i)>=(kth)) {
+		//cout <<"kth="<<kth<<",startIndex="<<startIndex<<",endIndex="<<j<<endl;
+		//return findKthElement(array, kth, startIndex, j);
+		return findKthElement(array, kth, startIndex, i-1);
+	} else {
+		//cout <<"kth="<<kth<<",startIndex="<<i<<",endIndex="<<endIndex<<endl;
+		return findKthElement(array, kth, i, endIndex);
+	}
 }
