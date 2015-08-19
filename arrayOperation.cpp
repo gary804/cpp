@@ -147,12 +147,16 @@ sortingTest:
 		for (int i=0; i < (ARRAY_SIZE(si10)); i++){
 			cout<<si10[i]<<((i!=ARRAY_SIZE(si10)-1)?",":"\n");
 		}
+	cout<<"=================================================\n";
 		int si12[] = {16,10,8,13,4,14,6,11,2,0,12,1,5,3,15,9,7};
+		//int si12[] = {15,0,8,2,6,10,14,4,12,1,11,9,3,7,5,13};
 		int si11[ARRAY_SIZE(si12)];
-		for (int i=0; i < (ARRAY_SIZE(si11)); i++){
-			cout<<si11[i]<<((i!=ARRAY_SIZE(si11)-1)?",":"\n");
+		for (int i=0; i < (ARRAY_SIZE(si12)); i++){
+			cout<<si12[i]<<((i!=ARRAY_SIZE(si12)-1)?",":"\n");
 		}
+	cout<<"=================================================\n";
 		//int kth = 17;
+
 		for (int i=1; i<=ARRAY_SIZE(si11); i++){
 			memcpy(si11,si12,(ARRAY_SIZE(si11))*sizeof(int));
 			int kth = i;
@@ -161,7 +165,16 @@ sortingTest:
 				cout<<si11[i]<<((i!=ARRAY_SIZE(si11)-1)?",":"\n");
 			}
 		}
-		
+
+	/*	
+			memcpy(si11,si12,(ARRAY_SIZE(si11))*sizeof(int));
+			int kth = 2;
+			cout <<kth<<"th element is " <<findKthElement(si11, kth, 0, (ARRAY_SIZE(si11)-1) ) <<endl;
+			for (int i=0; i < (ARRAY_SIZE(si11)); i++){
+				cout<<si11[i]<<((i!=ARRAY_SIZE(si11)-1)?",":"\n");
+			}
+	*/
+
 	}
 }
 
@@ -555,11 +568,11 @@ int findKthElement(int array[], int kth, int startIndex, int endIndex){
 		array[j--] = temp;
 	}
 	//cout <<i<<","<<j<<endl;
-	//if ((i-1)>=(kth)) {
 	if ((i)>=(kth)) {
 		//cout <<"kth="<<kth<<",startIndex="<<startIndex<<",endIndex="<<j<<endl;
-		//return findKthElement(array, kth, startIndex, j);
-		return findKthElement(array, kth, startIndex, i-1);
+		//return findKthElement(array, kth, startIndex, j);	//it will cause problem
+		return findKthElement(array, kth, 0, j);
+		//return findKthElement(array, kth, startIndex, i-1);	//it will cause problem
 	} else {
 		//cout <<"kth="<<kth<<",startIndex="<<i<<",endIndex="<<endIndex<<endl;
 		return findKthElement(array, kth, i, endIndex);
