@@ -161,9 +161,9 @@ sortingTest:
 			memcpy(si11,si12,(ARRAY_SIZE(si11))*sizeof(int));
 			int kth = i;
 			cout <<kth<<"th element is " <<findKthElement(si11, kth, 0, (ARRAY_SIZE(si11)-1) ) <<endl;
-			for (int i=0; i < (ARRAY_SIZE(si11)); i++){
-				cout<<si11[i]<<((i!=ARRAY_SIZE(si11)-1)?",":"\n");
-			}
+			//for (int i=0; i < (ARRAY_SIZE(si11)); i++){
+			//	cout<<si11[i]<<((i!=ARRAY_SIZE(si11)-1)?",":"\n");
+			//}
 		}
 
 /*	
@@ -585,9 +585,11 @@ int findKthElement(int array[], int kth, int startIndex, int endIndex){
 			return findKthElement(array, kth, startIndex, i-1);
 		}
 		
+		//return findKthElement(array, kth, startIndex, i-1);	//not work
 		//return findKthElement(array, kth, startIndex, i);	//works
 	} else {
 		//cout <<"kth="<<kth<<",startIndex="<<i<<",endIndex="<<endIndex<<",pivot="<<pivot<<endl;
+		/*
 		for (j=startIndex;j<i; j++){
 			if (array[j]>array[i]){
 				//cout <<"======i="<<i<<",j="<<j<<",array[i]="<<array[i]<<",array[j]="<<array[j]<<endl;
@@ -595,6 +597,12 @@ int findKthElement(int array[], int kth, int startIndex, int endIndex){
 				array[j] = array[i];
 				array[i] = temp;
 			}
+		}
+		*/
+		if (i>0 && array[i-1]>array[i]){
+			temp = array[i];
+			array[i] = array[i-1];
+			array[i-1] = temp;
 		}
 		return findKthElement(array, kth, i, endIndex);
 	}
