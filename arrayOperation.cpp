@@ -148,8 +148,8 @@ sortingTest:
 			cout<<si10[i]<<((i!=ARRAY_SIZE(si10)-1)?",":"\n");
 		}
 	cout<<"=================================================\n";
-		int si12[] = {16,10,8,13,4,14,6,11,2,0,12,1,5,3,15,9,7};
-		//int si12[] = {15,0,8,2,6,10,14,4,12,1,11,9,3,7,5,13};
+		//int si12[] = {16,10,8,13,4,14,6,11,2,0,12,1,5,3,15,9,7};
+		int si12[] = {15,0,8,2,6,10,14,4,12,1,11,9,3,7,5,13};
 		int si11[ARRAY_SIZE(si12)];
 		for (int i=0; i < (ARRAY_SIZE(si12)); i++){
 			cout<<si12[i]<<((i!=ARRAY_SIZE(si12)-1)?",":"\n");
@@ -166,14 +166,14 @@ sortingTest:
 			}
 		}
 
-	/*	
+/*	
 			memcpy(si11,si12,(ARRAY_SIZE(si11))*sizeof(int));
 			int kth = 2;
 			cout <<kth<<"th element is " <<findKthElement(si11, kth, 0, (ARRAY_SIZE(si11)-1) ) <<endl;
 			for (int i=0; i < (ARRAY_SIZE(si11)); i++){
 				cout<<si11[i]<<((i!=ARRAY_SIZE(si11)-1)?",":"\n");
 			}
-	*/
+*/
 
 	}
 }
@@ -547,7 +547,9 @@ int findKthElement(int array[], int kth, int startIndex, int endIndex){
 	int j = endIndex;
 	int temp = 0;
 	int pivot = array[startIndex+(endIndex-startIndex)/2];
-	//cout <<"????????????kth="<<kth<<",startIndex="<<startIndex<<",endIndex="<<endIndex<<",pivot="<<pivot<<endl;
+	//int pivot = array[startIndex];
+	//cout<<"----------------------------------------------------------------\n";
+	//cout <<"kth="<<kth<<",startIndex="<<startIndex<<",endIndex="<<endIndex<<",pivot="<<pivot<<endl;
 	//for (int i=0; i<=endIndex; i++) {cout <<array[i] <<",";} cout<<endl;
 	if (endIndex-startIndex <=1) {
 		if (array[startIndex] > array[endIndex]){
@@ -562,19 +564,38 @@ int findKthElement(int array[], int kth, int startIndex, int endIndex){
 		while(array[i]<pivot) i++;
 		while(array[j]>pivot) j--;
 		if (i>=j) break;
+		//if (i>j) break;	//cause problem
 		//cout <<i<<","<<j<<","<<array[i]<<","<<array[j]<<endl;
 		temp = array[i];
 		array[i++] = array[j];
 		array[j--] = temp;
 	}
 	//cout <<i<<","<<j<<endl;
-	if ((i)>=(kth)) {
+	//cout<<((i-1)>=(kth-1))<<endl;
+	if ((i-1)>=(kth-1)) {
 		//cout <<"kth="<<kth<<",startIndex="<<startIndex<<",endIndex="<<j<<endl;
+
 		//return findKthElement(array, kth, startIndex, j);	//it will cause problem
-		return findKthElement(array, kth, 0, j);
-		//return findKthElement(array, kth, startIndex, i-1);	//it will cause problem
+		//return findKthElement(array, kth, startIndex, (startIndex==i-1)?i: i-1);	//it will cause problem
+		//return findKthElement(array, kth, 0, j);
+		
+		if (i=j){	//works
+			return findKthElement(array, kth, startIndex, i);
+		} else{
+			return findKthElement(array, kth, startIndex, i-1);
+		}
+		
+		//return findKthElement(array, kth, startIndex, i);	//works
 	} else {
-		//cout <<"kth="<<kth<<",startIndex="<<i<<",endIndex="<<endIndex<<endl;
+		//cout <<"kth="<<kth<<",startIndex="<<i<<",endIndex="<<endIndex<<",pivot="<<pivot<<endl;
+		for (j=startIndex;j<i; j++){
+			if (array[j]>array[i]){
+				//cout <<"======i="<<i<<",j="<<j<<",array[i]="<<array[i]<<",array[j]="<<array[j]<<endl;
+				temp = array[j];
+				array[j] = array[i];
+				array[i] = temp;
+			}
+		}
 		return findKthElement(array, kth, i, endIndex);
 	}
 }
