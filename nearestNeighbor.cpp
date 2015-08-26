@@ -5,6 +5,8 @@
 #include <stdio.h>      /* printf, scanf, puts, NULL */
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
+#include <map>
+
 
 #define ARRAY_SIZE(array) (sizeof((array))/sizeof((array[0])))
 
@@ -263,10 +265,12 @@ main(){
 		Person iperson = *i ;
 		
 		list<Person> tList;
+		map<string, int> nameLocation;
 		int k=0;
 		for (j = i; j != pList.begin();){
 			--j;
 			Person jperson = *j ;
+			nameLocation[j->name] = j->location;
 			jperson.location = abs(jperson.location-iperson.location);
 			tList.push_back(jperson);
 			k++;
@@ -279,6 +283,7 @@ main(){
 		k=0;
 		for (j = i, ++j; j != pList.end();++j){
 			Person jperson = *j ;
+			nameLocation[j->name] = j->location;
 			jperson.location = abs(jperson.location-iperson.location);
 			tList.push_back(jperson);
 			k++;
@@ -294,12 +299,15 @@ main(){
 		for (j = tList.begin(); j != tList.end(); ++j)
 		{
 			//cout << *j << " "; // print with overloaded operator
+			/*
 			for (list<Person>::iterator tj=jj; tj!=pList.end(); ++tj){
 				if (j->name==tj->name){
 					cout<<*tj<<" ";
 					break;
 				}
 			}
+			*/
+			cout << j->name<<", "<<nameLocation[j->name]<<endl<<" ";
 		}
 		cout<<endl;
 	}
