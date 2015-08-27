@@ -309,6 +309,10 @@ main(){
 			*/
 			cout << j->name<<", "<<nameLocation[j->name]<<endl<<" ";
 		}
+		cout<<"The map are:"<<endl;	//the map is sorted according to the key;
+		for (map<string, int>::iterator i=nameLocation.begin(); i!=nameLocation.end();++i){
+			cout<<"["<<i->first<<","<<i->second<<"]; ";
+		}
 		cout<<endl;
 	}
 
