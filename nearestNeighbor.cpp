@@ -117,7 +117,8 @@ int Person::operator<(const Person &rhs) const
 	return 0;
 }
 
-main(){
+main()
+{
 /* vector operation demo
 	vector<string> SS;
 
@@ -231,9 +232,9 @@ main(){
 // 5 2 4.2355
 // 7 2 4.2355
 */
-	/* initialize random seed: */
+	// initialize random seed:
 	srand (time(NULL));
-	/* generate secret number between 1 and 100: */
+	// generate secret number between 1 and 100:
 	int iRandom = rand() % 100 + 1;
 
 	list<Person> pList;
@@ -247,19 +248,18 @@ main(){
 		iRandom = rand() % 100 + 1;
 		pList.push_back(person);
 	}
-	/*
-	cout<<"This is the original data:"<<endl<<" ";
-	for (i = pList.begin(); i != pList.end(); ++i)
-	{
-		cout << *i << " "; // print with overloaded operator
-	}
-	*/
+	//cout<<"This is the original data:"<<endl<<" ";
+	//for (i = pList.begin(); i != pList.end(); ++i)
+	//{
+	//	cout << *i << " "; // print with overloaded operator
+	//}
 	cout<<endl<<"This is sorted data:"<<endl<<" ";
 	pList.sort();
 	for (i = pList.begin(); i != pList.end(); ++i)
 	{
 		cout << *i << " "; // print with overloaded operator
 	}
+/*
 	for (i = pList.begin(); i != pList.end(); ++i)
 	{
 		Person iperson = *i ;
@@ -298,16 +298,15 @@ main(){
 		
 		for (j = tList.begin(); j != tList.end(); ++j)
 		{
+			//use list processing according to jj iterator
 			//cout << *j << " "; // print with overloaded operator
-			/*
-			for (list<Person>::iterator tj=jj; tj!=pList.end(); ++tj){
-				if (j->name==tj->name){
-					cout<<*tj<<" ";
-					break;
-				}
-			}
-			*/
-			cout << j->name<<", "<<nameLocation[j->name]<<endl<<" ";
+			//for (list<Person>::iterator tj=jj; tj!=pList.end(); ++tj){
+			//	if (j->name==tj->name){
+			//		cout<<*tj<<" ";
+			//		break;
+			//	}
+			//}
+			cout << j->name<<", "<<nameLocation[j->name]<<endl<<" ";	//use map
 		}
 		cout<<"The map are:"<<endl;	//the map is sorted according to the key;
 		for (map<string, int>::iterator i=nameLocation.begin(); i!=nameLocation.end();++i){
@@ -315,5 +314,47 @@ main(){
 		}
 		cout<<endl;
 	}
+*/
+	for (i = pList.begin(); i != pList.end(); ++i)
+	{
+		Person iperson = *i ;
+		//map<int, Person> distancePerson;
+		multimap<int, Person> distancePerson;
+		int k=0;
+		for (j = i; j != pList.begin();){
+			--j;
+			Person jperson = *j ;
+			int distance = abs(jperson.location-iperson.location);
+			distancePerson.insert(pair<int, Person>(distance,jperson)) ; //add <distance, jperson> into map
+			k++;
+			if (k>=3)
+			{
+				break;
+			}
+		}
+		list<Person>::iterator jj = j;
+		k=0;
+		for (j = i, ++j; j != pList.end();++j){
+			Person jperson = *j ;
+			int distance = abs(jperson.location-iperson.location);
+			//distancePerson[abs(jperson.location-iperson.location)] = jperson; //add <distance, jperson> into map
+			distancePerson.insert(pair<int, Person>(distance,jperson));	//add <distance, jperson> into multimap
+			k++;
+			if (k>=3)
+			{
+				break;
+			}
+		}
+		//distancePerson.resize(3);	//no resize function in map
+		cout << iperson<< "and the closest three friends:"<<endl<<" ";
+		k=0;
+		for (multimap<int, Person>::iterator j = distancePerson.begin(); j != distancePerson.end(); ++j)
+		{
+			cout << j->second<<" ";	//use map
+			if (++k>=3) break;
+		}
+		cout<<endl;
+	}
 
 }
+
