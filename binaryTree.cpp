@@ -178,23 +178,12 @@ void printPostorder(struct node* node) {
 }
 int hasPathSum(struct node* node, int sum){
 	if (node==NULL) {
-		return false;
+		return (sum==0);
 	}
 	//cout<<"sum="<<sum<<", "<<"node->data="<<node->data<<", ";
 	sum = sum - node->data;
-	if (node->left==NULL&&node->right==NULL) {
-		if (sum==0) {
-	//		cout<<"NodeData="<<node->data<<"Yes"<<endl;
-			return true;
-		} else return false;
-	}
 	//cout<<"new sum="<<sum<<endl;
 	return (hasPathSum(node->left,sum)||hasPathSum(node->right,sum));
-//	int left = hasPathSum(node->left,sum);
-//	cout <<node->data<<"lefy="<<left<<endl;
-//	int right = hasPathSum(node->right,sum);
-//	cout <<node->data<<"right="<<right<<endl;
-//	return left ||right;
 }
 void printPaths(struct node* node){
 	int maxdepth = maxDepth(node);
@@ -205,6 +194,7 @@ void printPaths(struct node* node){
 	if(maxdepth==1) delete data; else delete[] data;
 }
 void printPathsHelp(struct node* node, int* data, int datalength){
+	if (node==NULL) return;
 	data[datalength++]=node->data;
 	if(node->left==NULL&&node->right==NULL){
 		for (int i=0; i<datalength;++i){
@@ -212,12 +202,14 @@ void printPathsHelp(struct node* node, int* data, int datalength){
 		}
 		cout<<endl;
 	} else {
-		if (node->left!=NULL){
-			printPathsHelp(node->left, data, datalength);
-		} 
-		if (node->right!=NULL){
-			printPathsHelp(node->right, data, datalength);
-		} 
+//		if (node->left!=NULL){
+//			printPathsHelp(node->left, data, datalength);
+//		} 
+//		if (node->right!=NULL){
+//			printPathsHelp(node->right, data, datalength);
+//		} 
+		printPathsHelp(node->left, data, datalength);
+		printPathsHelp(node->right, data, datalength);
 	}
 
 }
@@ -236,21 +228,39 @@ void doubleTree(struct node* node) {
 	struct node* temp = new (struct node);
 	temp->data = node->data;
 	temp->left = node->left;
-	node->left = temp;
 	temp->right = NULL;
+	node->left = temp;
 	doubleTree(temp->left);
 	doubleTree(node->right);
 }
 int sameTree(struct node* a, struct node* b){
 	if (a==NULL&&b==NULL) return true;
-	if (a==NULL) return false;
-	if (b==NULL) return false;
+	if (a==NULL||b==NULL) return false;
 	if (a->data!=b->data) return false;
 	return (sameTree(a->left, b->left)&&sameTree(a->right,b->right));
 }
-long countTrees(int numKeys){
-	if (numKeys==1) return 1;
-	else return numKeys * countTrees(numKeys-1);	//take one from n candidates, there are n options.
+//long countTrees(int numKeys){
+//	if (numKeys==1) return 1;
+//	else return numKeys * countTrees(numKeys-1);	//take one from n candidates, there are n options.
+//}
+long countTrees(int numKeys) {
+	if (numKeys <=1) {
+		return(1);
+	}
+	else {
+	// there will be one value at the root, with whatever remains
+	// on the left and right each forming their own subtrees.
+	// Iterate through all the values that could be the root...
+		int sum = 0;
+		int left, right, root;
+		for (root=1; root<=numKeys; root++) {
+			left = countTrees(root - 1);
+			right = countTrees(numKeys - root);
+			// number of possible trees with this root == left*right
+			sum += left*right;
+		}
+		return(sum);
+	}
 }
 int minValueBinaryPlainTreeHelp(struct node* node, int minvalue){
 	if(node->left==NULL&&node->right==NULL){
@@ -297,70 +307,110 @@ int maxValueBinaryPlainTree(struct node* node) {
 		return maxValueBinaryPlainTreeHelp(node->right, node->data);
 	}
 }
-int isBST1(struct node* node) {
-	if (node==NULL) {
-		cout<<"node is null\n";
-		return false;
-	}
-	if (node->left==NULL&&node->right==NULL) {
-		cout<<node->data<<" node is a leaf\n";
-		return true;	
-	} 
-	if (node->left!=NULL&&node->right!=NULL) {
-		if (node->data < maxValueBinaryPlainTree(node->left)){
-			cout<<node->data<<" node is less than maxvalue of leftTree: "<< maxValueBinaryPlainTree(node->left)<<endl;
-			return false;	
-		} 
-		if (node->data >= minValueBinaryPlainTree(node->right)){
-			cout<<node->data<<" node <= minvalue of right subtree: "<<minValueBinaryPlainTree(node->right)<<endl;
-			return false;
-		} 
-		cout <<node->data <<" node: check the left and right subtrees: " << (int)( isBST1(node->left) && isBST1(node->right) ) <<endl;
-		return ( isBST1(node->left) && isBST1(node->right) );
-	} else if ( node->left != NULL ) {
-		if (node->data < maxValueBinaryPlainTree(node->left)){
-			cout<<node->data<<" node < maxvalue of left subtree: "<<maxValueBinaryPlainTree(node->left)<<endl;
-			return false;
-		} 
-		cout<<node->data<<" node, check the left subtree: "<<isBST1(node->left)<<endl;
-		return isBST1(node->left);
-	} else if (node->right) {
-		if (node->data >= minValueBinaryPlainTree(node->right)){
-			cout<<node->data<<" node < minvalue of right subtree: "<<minValueBinaryPlainTree(node->right)<<endl;
-			return false;
-		} 
-		cout<<node->data<<" node, check the right subtree: "<<isBST1(node->right)<<endl;
-		return isBST1(node->right);
-	}
+//int isBST1(struct node* node) {
+//	if (node==NULL) {
+//		cout<<"node is null\n";
+//		return false;
+//	}
+//	if (node->left==NULL&&node->right==NULL) {
+//		cout<<node->data<<" node is a leaf\n";
+//		return true;	
+//	} 
+//	if (node->left!=NULL&&node->right!=NULL) {
+//		if (node->data < maxValueBinaryPlainTree(node->left)){
+//			cout<<node->data<<" node is less than maxvalue of leftTree: "<< maxValueBinaryPlainTree(node->left)<<endl;
+//			return false;	
+//		} 
+//		if (node->data >= minValueBinaryPlainTree(node->right)){
+//			cout<<node->data<<" node <= minvalue of right subtree: "<<minValueBinaryPlainTree(node->right)<<endl;
+//			return false;
+//		} 
+//		cout <<node->data <<" node: check the left and right subtrees: " << (int)( isBST1(node->left) && isBST1(node->right) ) <<endl;
+//		return ( isBST1(node->left) && isBST1(node->right) );
+//	} else if ( node->left != NULL ) {
+//		if (node->data < maxValueBinaryPlainTree(node->left)){
+//			cout<<node->data<<" node < maxvalue of left subtree: "<<maxValueBinaryPlainTree(node->left)<<endl;
+//			return false;
+//		} 
+//		cout<<node->data<<" node, check the left subtree: "<<isBST1(node->left)<<endl;
+//		return isBST1(node->left);
+//	} else if (node->right) {
+//		if (node->data >= minValueBinaryPlainTree(node->right)){
+//			cout<<node->data<<" node < minvalue of right subtree: "<<minValueBinaryPlainTree(node->right)<<endl;
+//			return false;
+//		} 
+//		cout<<node->data<<" node, check the right subtree: "<<isBST1(node->right)<<endl;
+//		return isBST1(node->right);
+//	}
+//}
+/*
+Returns true if a binary tree is a binary search tree.
+*/
+int isBST(struct node* node) {
+	if (node==NULL) return(true);
+	// false if the min of the left is > than us
+	if (node->left!=NULL && minValue(node->left) > node->data)	//gary: it may cause problem, because minValue search on BST.
+		return(false);
+	// false if the max of the right is <= than us
+	if (node->right!=NULL && maxValue(node->right) <= node->data)
+		return(false);
+	// false if, recursively, the left or right is not a BST
+	if (!isBST(node->left) || !isBST(node->right))
+		return(false);
+	// passing all that, it's a BST
+	return(true);
 }
 /*
 Returns true if the given tree is a BST and its
 values are >= min and <= max.
 */
-int isBSTRecur(struct node* node, int min, int max) {
-	if (node->left==NULL && node->right==NULL){
-		if(node->data>=min &&node->data<=max){
-			return true;
-		} else {
-			return false;
-		}
-	} else if(node->left!=NULL && node->right!=NULL){
-		if(node->data< min || node->data>max){
-			return false;
-		} 
-		return ( isBSTRecur(node->left, min, node->data) && isBSTRecur(node->right, node->data, max) );
-	} else if (node->left!=NULL){
-		return ( isBSTRecur(node->left, min, node->data) );
-	} else if (node->right!=NULL) {
-		return ( isBSTRecur(node->right, node->data, max) );
-	}
-}
+//int isBSTRecur(struct node* node, int min, int max) {
+//	if (node->left==NULL && node->right==NULL){
+//		if(node->data>=min &&node->data<=max){
+//			return true;
+//		} else {
+//			return false;
+//		}
+//	} else if(node->left!=NULL && node->right!=NULL){
+//		if(node->data< min || node->data>max){
+//			return false;
+//		} 
+//		return ( isBSTRecur(node->left, min, node->data) && isBSTRecur(node->right, node->data, max) );
+//	} else if (node->left!=NULL){
+//		return ( isBSTRecur(node->left, min, node->data) );
+//	} else if (node->right!=NULL) {
+//		return ( isBSTRecur(node->right, node->data, max) );
+//	}
+//}
+///*
+//Returns true if the given tree is a binary search tree
+//(efficient version).
+//*/
+//int isBST2(struct node* node) {
+//	return(isBSTRecur(node, INT_MIN, INT_MAX));
+//}
 /*
 Returns true if the given tree is a binary search tree
 (efficient version).
 */
+int isBSTUtil(struct node* node, int min, int max);
 int isBST2(struct node* node) {
-	return(isBSTRecur(node, INT_MIN, INT_MAX));
+	return(isBSTUtil(node, INT_MIN, INT_MAX));
+}
+/*
+Returns true if the given tree is a BST and its
+values are >= min and <= max.
+*/
+int isBSTUtil(struct node* node, int min, int max) {
+	if (node==NULL) return(true);
+	// false if this node violates the min/max constraint
+	if (node->data<min || node->data>max) return(false);
+	// otherwise check the subtrees recursively,
+	// tightening the min or max constraint
+	return (
+		isBSTUtil(node->left, min, node->data) &&
+		isBSTUtil(node->right, node->data+1, max)
+	);
 }
 //-----------------------------------------------------
 //tree to list process:
